@@ -6,7 +6,7 @@ services:
     ports:
       - 8090:80
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/html:consistent
     links:
       - 'mariadb'
   mariadb:

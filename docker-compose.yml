@@ -1,0 +1,24 @@
+version: '3'
+services:
+  neoan3:
+    build:
+      context: ./php-apache
+    ports:
+      - 8090:80
+    volumes:
+      - ./app:/var/www/html
+    links:
+      - 'mariadb'
+  mariadb:
+    image: mariadb:10.6
+    volumes:
+    - mariadb:/var/lib/mysql
+    environment:
+      TZ: "UTC"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ROOT_PASSWORD: "neoan3"
+      MYSQL_USER: 'neoan3'
+      MYSQL_PASSWORD: 'neoan3'
+      MYSQL_DATABASE: 'neoan3'
+volumes:
+  mariadb:

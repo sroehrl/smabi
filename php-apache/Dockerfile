@@ -1,11 +1,11 @@
 FROM php:8.0.8-apache
-
 RUN buildDeps=" \
         wget \
         git \
         ssh \
         zip \
         libzip-dev \
+        curl \
     "; \
     set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*

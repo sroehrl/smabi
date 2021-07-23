@@ -1,0 +1,44 @@
+import {Link} from 'react-router-dom'
+import {FiUsers, FiCodesandbox, FiCopy, FiActivity, FiCalendar, FiSettings, FiTrello} from 'react-icons/fi';
+
+
+export default function Dashboard({children}) {
+    const menu = [
+        {to: '/', label: 'Dashboard', icon: FiTrello},
+        {to: '/client', label: 'Clients', icon: FiUsers},
+        {to: '/product', label: 'Products', icon: FiCodesandbox},
+        {to: '/invoice', label: 'Invoices', icon: FiCopy},
+        {to: '/expenses', label: 'Expenses', icon: FiActivity},
+        {to: '/calendar', label: 'Calendar', icon: FiCalendar},
+        {flex: true},
+        {to: '/settings', label: 'Settings', icon: FiSettings},
+    ];
+
+    return (
+        <div className={'d-flex bg-gray-lighter f-1'}>
+            <div className="bg-primary-50 b-r-1 b-primary d-flex" style={{flexDirection: 'column'}}>
+                {menu.map(item => (
+                    <>
+                        {item.flex ? (
+                            <div key={item} className={'f-1'}>&nbsp;</div>
+                        ): (
+                            <div className={'m-y-2 b-b-1 b-primary '} key={item.to}>
+                                <Link to={item.to}
+                                      className={'text-decoration-none font-md text-white p-x-3 hover:text-accent'}>
+                                    <item.icon/> {item.label}
+                                </Link>
+                            </div>
+                        )}
+
+                    </>
+
+                ))}
+            </div>
+            <div className="f-1">
+                <div className="container bg-white-light b-rounded b-1 b-gray m-y-5">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+}

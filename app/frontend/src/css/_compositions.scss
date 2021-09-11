@@ -1,7 +1,18 @@
 html, body, #root{
   height: 100%;
+  color: #575151;
+}
+body{
+  background: radial-gradient(circle, rgba(236, 236, 236, 0.68), white);
 }
 #root{
   display: flex;
   flex-direction: column;
+}
+@keyframes wiggle {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(0px)}
+  75% { transform: translateX(2px)}
+  100% { transform: translateX(0) }
 }

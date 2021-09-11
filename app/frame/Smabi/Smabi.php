@@ -7,6 +7,8 @@ namespace Neoan3\Frame;
 
 use Exception;
 use Neoan3\Core\Serve;
+use Neoan3\Provider\Auth\Auth;
+use Neoan3\Provider\Auth\JwtWrapper;
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Provider\MySql\DatabaseWrapper;
 
@@ -26,17 +28,24 @@ class Smabi extends Serve
      */
     public Database $db;
 
+    public Auth $auth;
+
     /**
      * Demo constructor.
      * @param Database|null $db
      * @throws Exception
      */
-    function __construct(Database $db = null)
+    function __construct(Database $db = null, Auth $auth = null)
     {
         parent::__construct();
-        $this->assignProvider('db', $db, function(){
+        /*$this->assignProvider('db', $db, function(){
             $credentials = getCredentials();
             $this->provider['db'] = new DatabaseWrapper($credentials[$this->dbCredentials]);
+        });*/
+        $this->assignProvider('auth', $auth, function (){
+            $this->provider['auth'] = new JwtWrapper();
+            $this->provider['auth']->setSecret('my-secret');
+            $this->auth = $this->provider['auth'];
         });
     }
 

@@ -10,7 +10,7 @@
 3. compose:
 
 ### start container
-`docker compose up`
+`docker-compose up -d`
 
 > runs on http://localhost:8090 (initially returns forbidden as it's empty)
 
@@ -21,7 +21,7 @@ You do not need PHP, composer, apache or mysql on your system.
 
 After the containers are running, enter the shell:
 
-`docker compose exec neoan3 sh`
+`docker-compose exec neoan3 sh`
 
 Then, you can run neoan3 commands as usual:
 

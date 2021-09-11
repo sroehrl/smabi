@@ -13,6 +13,8 @@ services:
     image: mariadb:10.6
     volumes:
     - mariadb:/var/lib/mysql
+    ports:
+      - 3308:3306
     environment:
       TZ: "UTC"
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"

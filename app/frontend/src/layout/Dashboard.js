@@ -1,5 +1,6 @@
 import {Link} from 'react-router-dom'
 import {FiUsers, FiCodesandbox, FiCopy, FiActivity, FiCalendar, FiSettings, FiTrello} from 'react-icons/fi';
+import {Fragment} from "react";
 
 
 export default function Dashboard({children}) {
@@ -17,8 +18,8 @@ export default function Dashboard({children}) {
     return (
         <div className={'d-flex bg-gray-lighter f-1'}>
             <div className="bg-primary-50 b-r-1 b-primary d-flex" style={{flexDirection: 'column'}}>
-                {menu.map(item => (
-                    <>
+                {menu.map((item,i) => (
+                    <Fragment key={i}>
                         {item.flex ? (
                             <div key={item} className={'f-1'}>&nbsp;</div>
                         ): (
@@ -30,7 +31,7 @@ export default function Dashboard({children}) {
                             </div>
                         )}
 
-                    </>
+                    </Fragment>
 
                 ))}
             </div>

@@ -10,7 +10,7 @@ function migrate() {
             }
         },
         async finish(){
-            fetch('{{base}}/api.v1/migrate',{
+            fetch('/api.v1/migrate',{
                 method: 'POST',
                 headers: {
                     'Content-Type':'application/json;charset=utf-8'

@@ -6,11 +6,13 @@ export default observer(({authentication})=>{
 
     return (
         <header className={'bg-primary p-3 text-white d-flex raise-1-gray'}>
-            <div className="logo">name</div>
+            <div className="logo font-lg">SMABI</div>
             <div className="f-1"></div>
             <div>
-                <button onClick={()=>authentication.login({user:{email:'bubu',password:'123123'},token:'123123123'})} className={'b-2 b-rounded-2 b-transparent bg-accent hover:b-white'}>login</button>
-                <button onClick={()=>authentication.logout()}>logout ({authentication.user?.email})</button>
+
+                {authentication.user && (
+                    <button className={'btn-warning'} onClick={()=>authentication.logout()}>logout ({authentication.user?.email})</button>
+                )}
             </div>
         </header>
     );

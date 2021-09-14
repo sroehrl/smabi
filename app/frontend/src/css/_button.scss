@@ -1,6 +1,6 @@
 .btn{
   text-transform: uppercase;
-  @extend .b-rounded, .b-1, .b-transparent, .p-x-3, .p-y-2, .text-white, .cursor-pointer;
+  @extend .b-rounded, .b-1, .b-transparent, .raise-1-gray, .p-x-3, .p-y-2, .text-white, .cursor-pointer;
 }
 .clickable{
   @extend .b-0, .text-primary, .cursor-pointer, .font-default;

@@ -26,3 +26,7 @@ After the containers are running, enter the shell:
 Then, you can run neoan3 commands as usual:
 
 `neoan3 new app`
+
+## Security notes
+- consider adding /credentials/credentials.json to .gitignore
+- remove ports from mariadb before deployment

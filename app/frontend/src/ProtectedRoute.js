@@ -1,5 +1,5 @@
 import {Route, Redirect} from 'react-router-dom';
-import AuthStore from "./store/Auth";
+import AuthStore from "./store/AuthStore";
 export default function ProtectedRoute({component: Component, ...args}){
     return(
             <Route {...args} render={(props)=>{

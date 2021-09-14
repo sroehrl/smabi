@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 
 export default class AuthStore{
     constructor() {
-        let user = sessionStorage.getItem('smabiUser');
+        let user = sessionStorage.getItem('user');
         if(user){
             user = JSON.parse(user);
         }

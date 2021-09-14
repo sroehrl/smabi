@@ -1,0 +1,20 @@
+.backdrop{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  @extend .bg-black-50;
+}
+.modal-box{
+  z-index: 99;
+  width: 60%;
+  margin: calc(50vh - 200px) auto 0;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  @extend .bg-white, .b-rounded, .raise-1-black;
+}
+.modal-content{
+  overflow-y: auto;
+  @extend .p-3, .f-1;
+}

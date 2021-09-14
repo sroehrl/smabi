@@ -4,9 +4,10 @@ services:
     build:
       context: ./php-apache
     ports:
-      - 8090:80
+      - "8090:80"
     volumes:
       - ./app:/var/www/html:consistent
+      - ./credentials:/credentials:consistent
     links:
       - 'mariadb'
   mariadb:

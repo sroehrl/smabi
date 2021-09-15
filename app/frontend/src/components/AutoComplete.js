@@ -1,9 +1,18 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 
-export default function AutoComplete({setter, options, type = 'text', label, key}){
+export default function AutoComplete({setter, options, type = 'text', label, indexKey, passedInValue, asSelect}){
     const [input,setInput] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [preselected, setPreselected] = useState(0);
+    useEffect(()=>{
+        if(passedInValue !== ''){
+            if(indexKey){
+                setInput(options.find(x => x[indexKey] === passedInValue).name)
+            } else {
+                setInput(passedInValue)
+            }
+        }
+    },[passedInValue,indexKey,options])
     const autocomplete = ev => {
         setSuggestions(options.filter(options => options.name.toLowerCase().startsWith(ev.target.value.toLowerCase())))
         setInput(ev.target.value)
@@ -18,7 +27,7 @@ export default function AutoComplete({setter, options, type = 'text', label, key
                 setPreselected(old => old-1)
                 break;
             case 'Enter':
-                updateInput(suggestions[preselected].name);
+                updateInput(suggestions[preselected].name, true);
                 inputField.current.blur()
                 break;
             default:
@@ -26,23 +35,32 @@ export default function AutoComplete({setter, options, type = 'text', label, key
                 break;
         }
     }
-    const updateInput = value => {
+    const updateInput = (value, final) => {
         setInput(value)
-        setter(value)
-        reset()
+        if(indexKey){
+            setter(options.find(x => x.name === value)[indexKey])
+        } else {
+            setter(value)
+        }
+        reset(final)
     }
-    const reset = () =>{
+    const reset = final =>{
         setPreselected(0);
-        setSuggestions([])
+        if(asSelect &&  !final){
+            setSuggestions(options)
+        } else {
+            setSuggestions([])
+        }
+
     }
     return(
         <div className={'position-relative'}>
             <div className="input position-relative">
-                <input ref={inputField} onFocus={reset} onKeyDown={keydown} autoComplete={'list'} value={input} onChange={autocomplete} type={type} placeholder={label} />
+                <input ref={inputField} onFocus={()=>reset(false)} onKeyDown={keydown} autoComplete={'list'} value={input} onChange={autocomplete} type={type} placeholder={label} />
                 <label>{label}</label>
                 <div className={'select-options'}>
                     {suggestions.map((suggestion,i) => (
-                        <div key={suggestion.code} onClick={() => updateInput(suggestion.name)} className={i === preselected ? 'bg-gray-25' : ''}>{suggestion.name}</div>
+                        <div key={i} onClick={() => updateInput(suggestion.name,true)} className={i === preselected ? 'bg-gray-25' : ''}>{suggestion.name}</div>
                     ))}
                 </div>
             </div>

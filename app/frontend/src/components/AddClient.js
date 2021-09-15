@@ -1,16 +1,27 @@
 import countries from "../store/countries";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {updateState} from "../utils/stateUpdater";
 import AutoComplete from "./AutoComplete";
-import client from "../services/client";
-export default function AddClient({propagate}){
-    const [clientData, setClientData] = useState({});
+import * as ClientService from "../services/client";
+import {clientStructure} from '../store/ClientStore'
+export default function AddClient({propagate, client}){
+    const [clientData, setClientData] = useState(clientStructure);
     const updateClientData = updateState(setClientData);
+
+    useEffect(()=>{
+        if(client){
+            setClientData({...client.currentClient})
+        }
+    },[client])
 
     const storeClient = async ev => {
         ev.preventDefault();
         try{
-            await client.create(clientData)
+            if(client){
+                client.currentClient = await ClientService.default.update(clientData)
+            } else {
+                client.currentClient = await ClientService.default.create(clientData)
+            }
             if(propagate){
                 propagate()
             }
@@ -62,7 +73,19 @@ export default function AddClient({propagate}){
                     </div>
                 </div>
                 <div className="p-l-3">
-                    <AutoComplete options={countries} label={'Country'} setter={country =>setClientData({...clientData, country})} />
+                    <AutoComplete passedInValue={clientData.country} options={countries} label={'Country'} setter={country =>setClientData({...clientData, country})} />
+                </div>
+            </div>
+            <div className="w-75p place-x-center">
+                <div className="input">
+                    <input value={clientData.email} onChange={updateClientData} type="email" name={'email'} placeholder={'Main email'} />
+                    <label>Main email</label>
+                </div>
+            </div>
+            <div className="w-75p place-x-center">
+                <div className="input">
+                    <input value={clientData.phone} onChange={updateClientData} type="phone" name={'phone'} placeholder={'Phone #'} />
+                    <label >Phone #</label>
                 </div>
             </div>
             <div className="grid w-75p place-x-center">

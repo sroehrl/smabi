@@ -1,15 +1,18 @@
 .backdrop{
-  position: absolute;
+
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  height: 100vh;
+  bottom: 0;
+  //height: 100vh;
   @extend .bg-black-50;
 }
 .modal-box{
   z-index: 99;
   width: 60%;
-  margin: calc(50vh - 200px) auto 0;
-  height: 400px;
+  margin: calc(50vh - 225px) auto 0;
+  height: 500px;
   display: flex;
   flex-direction: column;
   @extend .bg-white, .b-rounded, .raise-1-black;

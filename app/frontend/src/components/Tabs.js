@@ -16,7 +16,7 @@ export default function Tabs({tabs, onSelect}){
         <section className={'d-flex b-b-1'}>
             {localTabs.map((tab, i) => (
                 <div key={i} onClick={() => setActive(i)}
-                     className={' b-l-1 b-t-1 b-r-1 m-r-1 p-1 cursor-pointer' + (tab.active ? ' bg-primary text-white' : '')}>{tab.label}</div>
+                     className={'m-r-1 p-y-1 p-x-3 cursor-pointer b-b-2' + (tab.active ? ' b-primary ' : ' b-transparent')}>{tab.label}</div>
             ))}
         </section>
 

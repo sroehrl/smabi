@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import {FiUsers, FiCodesandbox, FiCopy, FiActivity, FiCalendar, FiSettings, FiTrello} from 'react-icons/fi';
+import {FiUsers, FiCodesandbox, FiCopy, FiActivity, FiCalendar, FiSettings, FiTrello, FiFileText} from 'react-icons/fi';
 import {Fragment} from "react";
 
 
@@ -10,6 +10,7 @@ export default function Dashboard({children}) {
         {to: '/product', label: 'Products', icon: FiCodesandbox},
         {to: '/invoice', label: 'Invoices', icon: FiCopy},
         {to: '/expenses', label: 'Expenses', icon: FiActivity},
+        {to: '/contracts', label: 'Contracts', icon: FiFileText},
         {to: '/calendar', label: 'Calendar', icon: FiCalendar},
         {flex: true},
         {to: '/settings', label: 'Settings', icon: FiSettings},

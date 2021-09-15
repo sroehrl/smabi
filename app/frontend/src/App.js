@@ -1,6 +1,7 @@
 import {lazy, Suspense} from "react";
 import {Route, Switch} from "react-router-dom";
 import './css/main.scss'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Login from "./pages/Login";

@@ -4,7 +4,6 @@ export default function ProtectedRoute({component: Component, ...args}){
     return(
             <Route {...args} render={(props)=>{
                 const auth = new AuthStore();
-                console.log(auth.token)
                 if(auth.token){
                     return <Component {...props}/>
                 } else {

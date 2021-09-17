@@ -48,16 +48,16 @@ class Transform
      */
     private function formatResult(&$result, $runner, $row)
     {
-        foreach ($this->modelStructure as $table => $fields){
+        foreach ($this->modelStructure as $table => $fields) {
             // account for empty sub model
-            if(empty($row[$table.'_id'])){
-                if(!isset($result[$table])){
+            if (empty($row[$table . '_id'])) {
+                if (!isset($result[$table])) {
                     $result[$table] = [];
                 }
                 continue;
             }
             // avoid duplication in complex models
-            if($table !== $this->modelName && isset($result[$table]) && $this->duplicationCheck($result[$table], $row[$table . '_id'])){
+            if ($table !== $this->modelName && isset($result[$table]) && $this->duplicationCheck($result[$table], $row[$table . '_id'])) {
                 continue;
             }
             $this->assignResult($result, $table, $fields, $row, $runner);
@@ -71,7 +71,7 @@ class Transform
      */
     function getGenerator($ids): \Generator
     {
-        foreach ($ids as $id){
+        foreach ($ids as $id) {
             yield $this->get($id['id']);
         }
     }
@@ -82,14 +82,14 @@ class Transform
      */
     function get($id)
     {
-        if(!$this->getReader){
+        if (!$this->getReader) {
             $this->getReader = $this->readSql();
         }
         $result = [];
-        $sql = $this->getReader['query'] . $this->getReader['joins'] . ' WHERE `'. $this->modelName .'`.`id` = UNHEX({{id}})' . $this->getReader['condition'];
-        $pureResult = $this->db->smart('>'.$sql, ['id' => $id]);
+        $sql = $this->getReader['query'] . $this->getReader['joins'] . ' WHERE `' . $this->modelName . '`.`id` = UNHEX({{id}})' . $this->getReader['condition'];
+        $pureResult = $this->db->smart('>' . $sql, ['id' => $id]);
 
-        foreach ($pureResult as $i => $row){
+        foreach ($pureResult as $i => $row) {
             $this->formatResult($result, $i, $row);
         }
         return $result;
@@ -104,9 +104,9 @@ class Transform
     {
         $id = $this->db->getNextId();
         $main = [];
-        foreach ($inserts as $potential => $value){
-            if(is_array($value)){
-                foreach ($value as $subModel){
+        foreach ($inserts as $potential => $value) {
+            if (is_array($value)) {
+                foreach ($value as $subModel) {
                     $subModel[$this->modelName . '_id'] = $id;
                     $this->db->smart($potential, $this->validate($potential, $subModel));
                 }
@@ -126,11 +126,11 @@ class Transform
     function update($entity): array
     {
         $main = [];
-        foreach ($entity as $potential => $values){
-            if(is_array($values)){
-                foreach($values as $value){
+        foreach ($entity as $potential => $values) {
+            if (is_array($values)) {
+                foreach ($values as $value) {
                     $extra = null;
-                    if(isset($value['id'])){
+                    if (isset($value['id'])) {
                         $extra = ['id' => '$' . $value['id']];
                     } else {
                         $value[$this->modelName . '_id'] = $entity['id'];
@@ -156,9 +156,9 @@ class Transform
         // main
         $this->deleteRow($this->modelName, $entity, $hard);
         // subs
-        foreach ($entity as $tableOrField => $fieldOrFields){
-            if(is_array($fieldOrFields)){
-                foreach ($fieldOrFields as $row){
+        foreach ($entity as $tableOrField => $fieldOrFields) {
+            if (is_array($fieldOrFields)) {
+                foreach ($fieldOrFields as $row) {
                     $this->deleteRow($tableOrField, $row, $hard);
                 }
             }
@@ -174,26 +174,26 @@ class Transform
     function find($condition, $callFunctions = []): array
     {
         $joinTables = [];
-        foreach ($condition as $tableField => $value){
-            if( preg_match('/[a-z_]+/', $tableField, $matches) === 1){
+        foreach ($condition as $tableField => $value) {
+            if (preg_match('/[a-z_]+/', $tableField, $matches) === 1) {
                 $joinTables[] = $matches[0];
             }
         }
 
         $join = $this->modelName . '.id';
-        foreach ($this->modelStructure as $table => $fields){
-            if($table !== $this->modelName && in_array($table, $joinTables)){
+        foreach ($this->modelStructure as $table => $fields) {
+            if ($table !== $this->modelName && in_array($table, $joinTables)) {
                 $join .= " $table.id:${table}_id";
             }
         }
         $callFunctions = array_merge([
-            'orderBy'=>[$this->modelName . '.id', 'DESC']],
+            'orderBy' => [$this->modelName . '.id', 'DESC']],
             $callFunctions
         );
         $hits = $this->db->easy($join, $condition, $callFunctions);
 
         $return = [];
-        foreach ($this->getGenerator($hits) as $hit){
+        foreach ($this->getGenerator($hits) as $hit) {
             $return[] = $hit;
         }
 
@@ -207,10 +207,10 @@ class Transform
      */
     private function deleteRow(string $table, array $row, bool $hard)
     {
-        if(!array_key_exists('delete_date', $row)  || $hard){
-            $this->db->smart('>DELETE FROM `' . $table . '` WHERE id = UNHEX({{id}})',['id'=>$row['id']]);
+        if (!array_key_exists('delete_date', $row) || $hard) {
+            $this->db->smart('>DELETE FROM `' . $table . '` WHERE id = UNHEX({{id}})', ['id' => $row['id']]);
         } else {
-            $this->db->smart($table, ['delete_date'=>'.'], ['id'=> '$' . $row['id']]);
+            $this->db->smart($table, ['delete_date' => '.'], ['id' => '$' . $row['id']]);
         }
     }
 
@@ -222,11 +222,20 @@ class Transform
     private function validate($table, $fieldValueArray): array
     {
         $returnArray = [];
-        foreach ($fieldValueArray as $field => $value){
-            if(isset($this->modelStructure[$table][$field])){
-                switch ($this->cleanType($this->modelStructure[$table][$field]['type'])){
+        foreach ($fieldValueArray as $field => $value) {
+            if (isset($this->modelStructure[$table][$field])) {
+                switch ($this->cleanType($this->modelStructure[$table][$field]['type'])) {
                     case 'binary':
-                        $returnArray[$field] = '$' . $value;
+                        $returnArray[$field] = !empty($value) ? '$' . $value : $value;
+                        break;
+                    case 'datetime':
+                        if (is_numeric($value)) {
+                            $value = date('Y-m-d H:i:s', round($value / 1000));
+                        } else {
+                            $value = preg_replace("/\s[A-Z]{3}\s[0-9]{4}\s\([^)]+\)/", '', $d);
+                        }
+                        $date_array = date_parse($value);
+                        $returnArray[$field] = !empty($date_array['errors']) ? null : date('Y-m-d H:i:s', mktime($date_array['hour'], $date_array['minute'], $date_array['second'], $date_array['month'], $date_array['day'], $date_array['year']));
                         break;
                     default:
                         $returnArray[$field] = $value;
@@ -250,22 +259,22 @@ class Transform
     private function readSql(): array
     {
         $pureQueryString = 'SELECT ';
-        $joins = ' FROM `' . $this->modelName .'`';
+        $joins = ' FROM `' . $this->modelName . '`';
         $condition = '';
         $modelName = $this->modelName;
-        foreach ($this->modelStructure as $table => $any){
-            if($table !== $modelName){
+        foreach ($this->modelStructure as $table => $any) {
+            if ($table !== $modelName) {
                 $joins .= " LEFT JOIN `$table` ON `$table`.`${modelName}_id` = `$modelName`.`id` ";
             }
-            foreach ($this->modelStructure[$table] as $field => $specs){
-                switch ($this->cleanType($specs['type'])){
+            foreach ($this->modelStructure[$table] as $field => $specs) {
+                switch ($this->cleanType($specs['type'])) {
                     case 'binary':
                         $pureQueryString .= "HEX(`${table}`.`${field}`) as ${table}_$field, ";
                         break;
                     case 'timestamp':
                     case 'date':
                     case 'datetime':
-                        if(($field == 'delete_date' || $field == 'deleteDate') && $table !== $modelName){
+                        if (($field == 'delete_date' || $field == 'deleteDate') && $table !== $modelName) {
                             $joins .= " AND `$table`.`$field` IS NULL ";
                         }
                         $pureQueryString .= "UNIX_TIMESTAMP(`${table}`.`${field}`)*1000 as ${table}_${field}_st, ";
@@ -276,7 +285,7 @@ class Transform
 
             }
         }
-        return ['query' => substr($pureQueryString, 0 , -2), 'joins' => $joins, 'condition' => $condition];
+        return ['query' => substr($pureQueryString, 0, -2), 'joins' => $joins, 'condition' => $condition];
     }
 
     /**
@@ -285,7 +294,7 @@ class Transform
      */
     private function cleanType($type)
     {
-        return preg_replace('/[^a-z]/','', $type);
+        return preg_replace('/[^a-z]/', '', $type);
     }
 
     /**
@@ -295,8 +304,8 @@ class Transform
      */
     private function duplicationCheck($subModelResults, $id): bool
     {
-        foreach ($subModelResults as $existing){
-            if($existing['id'] === $id){
+        foreach ($subModelResults as $existing) {
+            if ($existing['id'] === $id) {
                 return true;
             }
         }
@@ -312,17 +321,17 @@ class Transform
      */
     private function assignResult(&$result, string $table, array $fields, array $row, int $runner)
     {
-        foreach ($fields as $fieldName => $specs){
+        foreach ($fields as $fieldName => $specs) {
 
-            if($table == $this->modelName){
-                $result[$fieldName] = $row[$table .'_' . $fieldName];
-                if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
-                    $result[$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
+            if ($table == $this->modelName) {
+                $result[$fieldName] = $row[$table . '_' . $fieldName];
+                if (in_array($this->cleanType($specs['type']), ['timestamp', 'date', 'datetime'])) {
+                    $result[$fieldName . '_st'] = $row[$table . '_' . $fieldName . '_st'];
                 }
             } else {
-                $result[$table][$runner][$fieldName] = $row[$table .'_' . $fieldName];
-                if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
-                    $result[$table][$runner][$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
+                $result[$table][$runner][$fieldName] = $row[$table . '_' . $fieldName];
+                if (in_array($this->cleanType($specs['type']), ['timestamp', 'date', 'datetime'])) {
+                    $result[$table][$runner][$fieldName . '_st'] = $row[$table . '_' . $fieldName . '_st'];
                 }
             }
         }

@@ -5,7 +5,7 @@ export default function AutoComplete({setter, options, type = 'text', label, ind
     const [suggestions, setSuggestions] = useState([])
     const [preselected, setPreselected] = useState(0);
     useEffect(()=>{
-        if(passedInValue !== ''){
+        if(typeof passedInValue !== 'undefined'){
             if(indexKey){
                 setInput(options.find(x => x[indexKey] === passedInValue).name)
             } else {

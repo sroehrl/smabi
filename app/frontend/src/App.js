@@ -8,12 +8,16 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthStore from "./store/AuthStore";
 import ClientStore from "./store/ClientStore";
+import EventStore from "./store/EventStore";
 const authentication = new AuthStore();
 const currentClient = new ClientStore();
+const events = new EventStore();
+
 
 
 const Settings = lazy(()=> import('./pages/Settings'))
 const Client = lazy(()=> import('./pages/Client'))
+const Calendar = lazy(()=> import('./pages/Calendar'))
 function App() {
     return (
         <>
@@ -23,6 +27,7 @@ function App() {
                     <Route path={'/login'} component={()=><Login authentication={authentication}/>}/>
                     <ProtectedRoute path={'/'} exact component={Home}/>
                     <ProtectedRoute path={'/client'} component={() =><Client client={currentClient}/>}/>
+                    <ProtectedRoute path={'/calendar'} component={() =><Calendar client={currentClient} events={events}/>}/>
                     <ProtectedRoute path={'/settings'} component={Settings}/>
                 </Suspense>
 

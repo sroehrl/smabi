@@ -27,6 +27,7 @@ export default function SearchBox({service, label, component: Component}) {
                 setSelected(old => old - 1)
                 break;
             case 'Enter':
+                ev.preventDefault()
                 setExternalTrigger(true)
                 break;
             default:

@@ -2,7 +2,7 @@ import countries from "../store/countries";
 import {useEffect, useState} from "react";
 import {updateState} from "../utils/stateUpdater";
 import AutoComplete from "./AutoComplete";
-import * as ClientService from "../services/client";
+import ClientService from "../services/client";
 import {clientStructure} from '../store/ClientStore'
 export default function AddClient({propagate, client}){
     const [clientData, setClientData] = useState(clientStructure);
@@ -18,9 +18,9 @@ export default function AddClient({propagate, client}){
         ev.preventDefault();
         try{
             if(client){
-                client.currentClient = await ClientService.default.update(clientData)
+                client.currentClient = await ClientService.update(clientData)
             } else {
-                client.currentClient = await ClientService.default.create(clientData)
+                client.currentClient = await ClientService.create(clientData)
             }
             if(propagate){
                 propagate()

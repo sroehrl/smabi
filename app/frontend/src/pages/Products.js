@@ -6,8 +6,6 @@ import Modal from "../components/Modal";
 import AddProduct from "../components/AddProduct";
 
 export default observer(({productStore}) => {
-    const [products, setProducts] = useState([])
-    const [filteredProducts, setFilteredProducts] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [retireProduct, setRetireProduct] = useState(null)
     const [showRetireModal, setShowRetireModal] = useState(false)
@@ -17,16 +15,11 @@ export default observer(({productStore}) => {
     useEffect(() => {
         if (productStore.products.length < 1) {
             productService.find().then(res => {
-                setProducts(res)
-                setFilteredProducts(res)
                 productStore.set(res)
             })
         }
     }, [productStore])
 
-    useEffect(()=>{
-        setFilteredProducts(products.filter(p => p.name.toLowerCase().includes(productFilter.toLowerCase())))
-    },[productFilter])
 
     const toggleExpanded = iterator => {
         setExpandedProduct(expandedProduct===null?iterator:null)
@@ -70,7 +63,7 @@ export default observer(({productStore}) => {
                             <p className="font-strong">price</p>
                             <p className="font-strong">sales tax</p>
                         </div>
-                        {filteredProducts.map((product,i) => (
+                        {productStore.products.filter(p => p.name.toLowerCase().includes(productFilter.toLowerCase())).map((product,i) => (
                             <div className={'p-3 b-1 b-gray m-y-1'} key={product.id}>
                                 <div className="grid-4-2-2-2-2">
                                     <p>{product.name}</p>

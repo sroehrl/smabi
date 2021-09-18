@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
 import dayjs from "dayjs";
 import {eventStructure} from "../store/EventStore";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import * as calendarService from "../services/calendar";
 import Modal from "../components/Modal";
 import AddEvent from "../components/AddEvent";
@@ -20,18 +20,21 @@ export default observer(({events}) => {
     useEffect(() => {
         setCalendarApi(calendar.current.getApi())
 
-    }, [calendar.current])
+    }, [calendar])
+
+    const fetchEvents = useCallback(from => {
+        calendarService.default.getRange(from.getTime()).then(ssEvents => {
+            events.set(ssEvents)
+        })
+    },[events])
+
     useEffect(() => {
         const today = new Date();
         today.setDate(1);
         fetchEvents(today)
-    }, [])
+    }, [fetchEvents])
 
-    const fetchEvents = from => {
-        calendarService.default.getRange(from.getTime()).then(ssEvents => {
-            events.set(ssEvents)
-        })
-    }
+
 
 
 

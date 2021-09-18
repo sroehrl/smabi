@@ -4,13 +4,14 @@ import productService from "../services/product";
 import {updateState} from "../utils/stateUpdater";
 import AutoComplete from "./AutoComplete";
 
-export default function AddProduct({productStore}) {
+export default function AddProduct({productStore,propagate}) {
     const [product, setProduct] = useState(productStructure)
     const updateProduct = updateState(setProduct)
 
     const storeProduct = async ev => {
         ev.preventDefault();
         productStore.set([...productStore.products, await productService.create(product)])
+        propagate()
     }
 
     return (

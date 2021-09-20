@@ -38,12 +38,12 @@ class CalendarModel implements Model{
             return self::$method(...$args);
         }
     }
-    public static function range($from)
+    public static function range($from, $to=false, $filter=false)
     {
         $res = [];
         $fromDate = date('Y-m-d', $from/1000);
         $toDate = date('Y-m-d', strtotime('+1 months', $from/1000));
-        $ids = self::$db->smart('>SELECT id from calendar WHERE start_date > {{from}} AND start_date < {{to}} AND delete_date IS NULL', [
+        $ids = self::$db->smart('>SELECT id, UNHEX(client_id) as client_id from calendar WHERE start_date > {{from}} AND start_date < {{to}} AND delete_date IS NULL', [
             'from'=> $fromDate,
             'to' => $toDate
         ]);

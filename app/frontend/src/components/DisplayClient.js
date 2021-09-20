@@ -6,8 +6,9 @@ import AddClient from "./AddClient";
 import ClientService from '../services/client'
 import DisplayContact from "./DisplayContact";
 import AddContact from "./AddContact";
+import EventList from "./EventList";
 
-export default observer(({client}) => {
+export default observer(({client, events}) => {
     const [selectedTab, setSelectedTab] = useState(0)
     const [showClientModal, setShowClientModal] = useState(false)
     const [showContactModal, setShowContactModal] = useState(false)
@@ -77,8 +78,10 @@ export default observer(({client}) => {
             </div>
             <div className={'p-3'}>
                 <Tabs tabs={tabs} onSelect={setSelectedTab}/>
-                {selectedTab === 0 && (
-                    <p>Calendar / timeline</p>
+                {selectedTab === 0 && client.currentClient.id && (
+                    <div className="p-3">
+                        <EventList events={events} clientId={client.currentClient.id}/>
+                    </div>
                 )}
                 {selectedTab === 1 && (
                     <div className={''}>

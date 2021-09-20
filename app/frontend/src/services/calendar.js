@@ -9,8 +9,8 @@ class Calendar{
         const {data} = await api.put('/calendar', event)
         return data;
     }
-    async getRange(from, to){
-        const {data} = await api.get(`/calendar?from=${from}&to=${to}`)
+    async getRange(from, to, filter){
+        const {data} = await api.get(`/calendar?from=${from}&to=${to || ''}&filter=${filter || ''}`)
         return data;
     }
 }

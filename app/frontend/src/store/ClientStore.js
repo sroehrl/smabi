@@ -32,7 +32,7 @@ export const clientStructure = {
 
 }
 export const contactStructure = {
-    gender: '',
+    gender: undefined,
     position: '',
     first_name: '',
     initials: '-',

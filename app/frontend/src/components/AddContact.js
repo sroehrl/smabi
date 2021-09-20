@@ -6,7 +6,7 @@ import * as ClientService from "../services/client";
 import Tabs from "./Tabs";
 
 export default function AddContact({client, propagate, existingContact}) {
-    const [contact, setContact] = useState(contactStructure)
+    const [contact, setContact] = useState({...contactStructure})
     const [tab, setTab] = useState(0)
     const updateContactData = updateState(setContact)
     const genderOptions = [

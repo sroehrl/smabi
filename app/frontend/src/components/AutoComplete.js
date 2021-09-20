@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from "react";
 
-export default function AutoComplete({setter, options, type = 'text', label, indexKey, passedInValue, asSelect}){
+export default function AutoComplete({setter, options, type = 'text', label, indexKey, passedInValue, asSelect, noFloatingLabel}){
     const [input,setInput] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [preselected, setPreselected] = useState(0);
@@ -57,7 +57,7 @@ export default function AutoComplete({setter, options, type = 'text', label, ind
         <div className={'position-relative'}>
             <div className="input position-relative">
                 <input ref={inputField} onFocus={()=>reset(false)} onKeyDown={keydown} autoComplete={'list'} value={input} onChange={autocomplete} type={type} placeholder={label} />
-                <label>{label}</label>
+                {!noFloatingLabel &&<label>{label}</label>}
                 <div className={'select-options'}>
                     {suggestions.map((suggestion,i) => (
                         <div key={i} onClick={() => updateInput(suggestion.name,true)} className={i === preselected ? 'bg-gray-25' : ''}>{suggestion.name}</div>

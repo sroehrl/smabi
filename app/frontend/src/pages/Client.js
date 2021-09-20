@@ -7,7 +7,7 @@ import {useCallback, useEffect, useState} from "react";
 import * as ClientService from "../services/client";
 import DisplayClient from "../components/DisplayClient";
 
-export default observer(({client}) => {
+export default observer(({client, events}) => {
     const [showModal, setShowModal] = useState(false);
     const SearchResults = ({result, clear, isSelected, trigger}) => {
         const choose = useCallback(() => {
@@ -42,7 +42,7 @@ export default observer(({client}) => {
                             </div>
                         </div>
                         {client.currentClient.name && (
-                            <DisplayClient client={client}/>
+                            <DisplayClient client={client} events={events}/>
                         )}
                     </div>
                 </>

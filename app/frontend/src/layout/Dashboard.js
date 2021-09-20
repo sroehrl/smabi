@@ -6,12 +6,12 @@ import {Fragment} from "react";
 export default function Dashboard({children}) {
     const menu = [
         {to: '/', label: 'Dashboard', icon: FiTrello},
-        {to: '/client', label: 'Clients', icon: FiUsers},
-        {to: '/product', label: 'Products', icon: FiCodesandbox},
-        {to: '/invoice', label: 'Invoices', icon: FiCopy},
-        {to: '/expenses', label: 'Expenses', icon: FiActivity},
-        {to: '/contracts', label: 'Contracts', icon: FiFileText},
         {to: '/calendar', label: 'Calendar', icon: FiCalendar},
+        {to: '/client', label: 'Clients', icon: FiUsers},
+        {to: '/contracts', label: 'Contracts', icon: FiFileText},
+        {to: '/expenses', label: 'Expenses', icon: FiActivity},
+        {to: '/invoices', label: 'Invoices', icon: FiCopy},
+        {to: '/product', label: 'Products', icon: FiCodesandbox},
         {flex: true},
         {to: '/settings', label: 'Settings', icon: FiSettings},
     ];

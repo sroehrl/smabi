@@ -3,6 +3,7 @@
 namespace Neoan3\Component\Product;
 
 use Neoan3\Frame\Smabi;
+use Neoan3\Model\Client\ClientModel;
 use Neoan3\Model\Product\ProductModel;
 use Neoan3\Provider\Auth\Authorization;
 use Neoan3\Provider\Model\InitModel;
@@ -20,15 +21,22 @@ class ProductController extends Smabi{
      * GET: api.v1/product
      * GET: api.v1/product/{id}
      * GET: api.v1/product?{query-string}
+     * @param string|null $id
      * @param array $params
      * @return array
      */
     #[Authorization('restrict')]
     #[InitModel(ProductModel::class)]
-    function getProduct(array $params = []): array
+    function getProduct(string $id = null, array $params = []): array
     {
-        if(isset($params['find'])){
-            return ProductModel::search($params['find']);
+        if($id){
+            return ProductModel::get($id);
+        }
+        if(isset($params['search'])){
+            return ProductModel::search($params['search']);
+        }
+        if (isset($params['offset']) && isset($params['limit'])) {
+            return ProductModel::find(['^delete_date'], ['orderBy' => ['insert_date', 'desc'], 'limit' => [$params['offset'], $params['limit'] + $params['offset']]]);
         }
         return [];
     }
@@ -55,4 +63,10 @@ class ProductController extends Smabi{
     {
         return ProductModel::update($body);
     }
+
+    function deleteProduct($id)
+    {
+        return ProductModel::delete($id);
+    }
+
 }

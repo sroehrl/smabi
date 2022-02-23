@@ -25,6 +25,7 @@ class AuthController extends Smabi{
     function getAuth(): array
     {
         $user = $this->auth->restrict();
+        $newUser = [];
         return [
             'user' => UserModel::get($user->getUserId())
         ];

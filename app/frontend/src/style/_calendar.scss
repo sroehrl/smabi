@@ -1,0 +1,23 @@
+
+
+$eventMap: ("call":#cc21c4,"in_person":#7f913c,"event":#dad92b);
+
+@each $name, $value in $eventMap{
+  .event-#{$name}{
+    position: relative;
+  }
+  .event-#{$name}:after{
+    content:"";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid white;
+    border-radius: 50%;
+    background: $value;
+    top: 3px;
+    right: 2px;
+    &:hover{
+      content: $name
+    }
+  }
+}

@@ -48,4 +48,11 @@ class CalendarController extends Smabi{
     {
         return CalendarModel::update($body);
     }
+
+    #[InitModel(CalendarModel::class)]
+    #[Authorization('restrict')]
+    function deleteCalendar(string $id, $params = []) : array
+    {
+        return CalendarModel::delete($id);
+    }
 }

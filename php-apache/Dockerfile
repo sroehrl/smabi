@@ -15,7 +15,7 @@ RUN a2enmod rewrite && \
     apache2ctl restart
 RUN wget https://getcomposer.org/installer -O - -q | php -- --quiet && \
     mv composer.phar /usr/local/bin/composer && \
-    mkdir /var/www/html/model
-    chowm -R www-data:www-data /var/www/html/model
+    mkdir /var/www/html/model && \
+    chown -R www-data:www-data /var/www/html/model
 RUN composer global require neoan3/neoan3 --ignore-platform-reqs
 ENV PATH /root/.composer/vendor/bin:$PATH

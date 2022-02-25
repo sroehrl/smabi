@@ -45,7 +45,7 @@ class ClientModel implements Model{
             'pure' => $keyword,
             'keyword' => "%$keyword%"
         ];
-        $ids = self::$db->smart('>SELECT id FROM client WHERE delete_date IS NULL id = UNHEX({{pure}}) OR name LIKE {{keyword}} OR website LIKE {{keyword}} OR zip_code LIKE {{keyword}}', $values);
+        $ids = self::$db->smart('>SELECT id FROM client WHERE delete_date IS NULL AND ( id = UNHEX({{pure}}) OR name LIKE {{keyword}} OR website LIKE {{keyword}} OR zip_code LIKE {{keyword}})', $values);
         $results = [];
         foreach ($ids as $id){
             $results[] = self::get($id['id']);

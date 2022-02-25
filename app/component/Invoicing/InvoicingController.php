@@ -31,9 +31,16 @@ class InvoicingController extends Smabi{
     #[Authorization('restrict')]
     function getInvoicing(?string $id = null, array $params = []): array
     {
+        if (isset($params['search'])) {
+            return InvoiceModel::search($params['search']);
+        }
+        if (isset($params['offset']) && isset($params['limit'])) {
+            return InvoiceModel::find(['^delete_date'], ['orderBy' => ['insert_date', 'desc'], 'limit' => [$params['offset'], $params['limit'] + $params['offset']]]);
+        }
         if($id){
             return InvoiceModel::get($id);
         }
+
     }
 
     /**

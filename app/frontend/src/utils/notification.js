@@ -14,6 +14,14 @@ export default {
             if(ops.text){
                 container.querySelector('.notification-text').innerHTML = ops.text;
             }
+            if(ops.type && ops.type==='toast'){
+                const confirm = container.querySelector('.type-confirm')
+                confirm.style.display = 'none';
+                setTimeout(()=>{
+                    container.style.display = 'none'
+                    confirm.style.display = 'block';
+                },1500)
+            }
             container.style.display = 'block';
 
             return new Promise((resolve, reject)=>{

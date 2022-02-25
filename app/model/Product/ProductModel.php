@@ -45,7 +45,7 @@ class ProductModel implements Model
             'pure' => $keyword,
             'keyword' => "%$keyword%"
         ];
-        $ids = self::$db->smart('>SELECT id FROM product WHERE (id = UNHEX({{pure}}) OR name LIKE {{keyword}} OR description LIKE {{keyword}}) AND delete_date IS NULL ORDER BY name', $values);
+        $ids = self::$db->smart('>SELECT id FROM product WHERE (id = UNHEX({{pure}}) OR name LIKE {{keyword}} OR description LIKE {{keyword}} OR product_number LIKE {{keyword}} OR category LIKE {{keyword}}) AND delete_date IS NULL ORDER BY name', $values);
         $results = [];
         foreach ($ids as $id) {
             $results[] = self::get($id['id']);

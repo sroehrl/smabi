@@ -26,13 +26,25 @@ const routes = [
   {
     path: '/products',
     name: 'Products',
-    component: () => import(/* webpackChunkName: "Client" */ '../views/Products.vue')
+    component: () => import(/* webpackChunkName: "Products" */ '../views/Products.vue')
 
   },
   {
-    path: '/product/:id',
+    path: '/product/:id*',
     name: 'Product',
-    component: () => import(/* webpackChunkName: "Client" */ '../views/Product.vue')
+    component: () => import(/* webpackChunkName: "Product" */ '../views/Product.vue')
+
+  },
+  {
+    path: '/settings/:tab*',
+    name: 'Settings',
+    component: () => import(/* webpackChunkName: "Settings" */ '../views/Settings.vue')
+
+  },
+  {
+    path: '/invoices/:tab*',
+    name: 'Invoicing',
+    component: () => import(/* webpackChunkName: "Invoicing" */ '../views/Invoices.vue')
 
   }
 ]

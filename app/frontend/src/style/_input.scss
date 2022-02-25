@@ -1,12 +1,12 @@
 .input{
-  @extend .w-100p, .m-y-4, .d-flex;
+  @extend .w-100p, .m-y-5, .d-flex;
   position: relative;
   :focus{
     box-shadow: 0.2rem 0.8rem 1.6rem gray;
   }
   label{
     position: absolute;
-    bottom: 50%;
+    top: -6px;
     left: -2rem;
     font-family: inherit;
     opacity: 0;
@@ -24,7 +24,7 @@
     @extend .p-l-3, .text-warning, .position-absolute;
     visibility: hidden;
     right: 0;
-    bottom: -15px;
+    bottom: -20px;
   }
   input, textarea{
     @extend .b-rounded, .m-y-1, .b-1, .b-transparent, .p-x-3, .p-y-2, .bg-white, .f-1;
@@ -53,6 +53,9 @@
       transform: translate3d(2.75rem, -15px,0);
       transition: transform 300ms, visibility 0ms;
     }
+    &:not(:focus):required::placeholder{
+      color: $warningColor;
+    }
 
     &:valid{
       &:not(:focus):required{
@@ -69,6 +72,7 @@
         animation: wiggle 200ms 3;
       }
     }
+
   }
   .select-options{
     @extend .position-absolute, .b-rounded, .bg-white;

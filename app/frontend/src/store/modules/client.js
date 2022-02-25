@@ -93,7 +93,8 @@ export default {
         },
         getCurrentClientContacts(state) {
             return state.currentClient?.client_contact || [];
-        }
+        },
+        getClientById : state => clientId => state.clients.find(x => x.id === clientId)
     }
 }
 

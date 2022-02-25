@@ -2,7 +2,7 @@
   <form @submit.prevent="save" class="m-x-8 p-t-3">
     <div class="grid-4-8 md:grid-2-4-2-4">
       <div class="p-r-2">
-        <auto-complete v-model:given-id="localContact.gender" :options="[{id:0,name:'Mrs'},{id:1,name:'Mr',id:2,name: 'Other'}]" />
+        <auto-complete v-model:given-id="localContact.gender" :options="[{id:0,name:'Mrs'},{id:1,name:'Mr'},{id:2,name: 'Other'}]" />
       </div>
       <div class="p-l-2 md:p-x-2">
         <div class="input">

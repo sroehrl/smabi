@@ -3,6 +3,8 @@ import Auth from './modules/auth';
 import Calendar from './modules/calendar';
 import Client from "@/store/modules/client";
 import Product from "@/store/modules/product";
+import Settings from "@/store/modules/settings";
+import Invoice from "@/store/modules/invoicing";
 
 export default createStore({
   state: {
@@ -15,6 +17,8 @@ export default createStore({
     Auth,
     Calendar,
     Client,
-    Product
+    Product,
+    Settings,
+    Invoice
   }
 })

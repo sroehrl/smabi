@@ -38,6 +38,20 @@ class InvoiceModel implements Model{
             return self::$method(...$args);
         }
     }
+    public static function search($keyword): array
+    {
+        $values = [
+            'pure' => $keyword,
+            'keyword' => "%$keyword%"
+        ];
+        $sql = '>SELECT id FROM invoice i LEFT JOIN client c ON c.id = i.client_id WHERE i.delete_date IS NULL AND (c.name LIKE {{keyword}} OR i.id = UNHEX({{pure}}) OR i.notes LIKE {{keyword}})';
+        $ids = self::$db->smart($sql, $values);
+        $results = [];
+        foreach ($ids as $id){
+            $results[] = self::get($id['id']);
+        }
+        return $results;
+    }
 
     /**
      * @param array $providers

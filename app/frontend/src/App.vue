@@ -7,7 +7,7 @@
       </router-link>
       <div class="f-1"/>
       <div v-if="$store.getters.isLoggedIn" class="place-y-center">
-        <button class="btn-accent">{{ $store.state.Auth.user.email }}</button>
+        <button class="btn-accent">{{ $store.state.Auth.user.email.replace(/@[^$]+/,'') }}</button>
       </div>
     </header>
     <div class="d-flex bg-gray-lighter f-1">
@@ -20,19 +20,19 @@
             <div class="place-y-center">
               <unicon :name="item.icon" fill="#517f83"></unicon>
             </div>
-            <div class="p-l-3 p-b-2">{{ item.label }}</div>
+            <div class="p-l-3 p-b-2 d-hidden md:d-block">{{ item.label }}</div>
           </router-link>
         </div>
       </div>
-      <div class="m-5 bg-white f-1 h-100p" style="overflow-y: auto" :style="contentHeight">
+      <div class="md:m-5 bg-white f-1 h-100p" style="overflow-y: auto" :style="contentHeight">
         <router-view v-if="$store.getters.isLoggedIn"/>
         <Login v-else/>
       </div>
 
     </div>
     <div class="position-absolute bg-white b-rounded b-1 b-primary p-x-5 p-y-2 grid raise-3-accent-light" style="width: 200px; top: 40%; left: calc(50% - 100px); z-index: 9; display: none" id="notification">
-      <div class="place-x-center notification-text"></div>
-      <div class="grid-6-6">
+      <div class="place-x-center m-b-3 notification-text"></div>
+      <div class="grid-6-6 type-confirm">
         <button class="btn-warning m-r-1" id="cancel-button">cancel</button>
         <button class="btn-primary m-l-1" id="confirm-button">yes</button>
       </div>

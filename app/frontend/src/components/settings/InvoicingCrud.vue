@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <form @submit.prevent="store">
-      <div class="grid-6-6" v-if="settingsObject">
+    <form @submit.prevent="save" v-if="settingsObject">
+      <div class="grid-6-6">
         <div class="p-r-2">
           <h3>Runners</h3>
           <div class="input">
@@ -48,6 +48,24 @@
         </div>
 
       </div>
+      <h3>Currency</h3>
+      <div class="grid-3-3-6">
+        <div class="p-r-2">
+          <div class="input">
+            <input type="text" placeholder="Currency Locale" v-model="settingsObject.currency_locale">
+            <label>Currency Locale</label>
+          </div>
+        </div>
+        <div class="p-x-2">
+          <div class="input">
+            <input type="text" placeholder="Currency ISO" v-model="settingsObject.currency">
+            <label>Currency ISO</label>
+          </div>
+        </div>
+        <div class="p-l-2 grid">
+          <p class="place-y-center place-x-center">{{currencyPreview()}}</p>
+        </div>
+      </div>
       <div class="grid">
         <div class="place-x-end">
           <button class="btn-primary" type="submit">save</button>
@@ -67,10 +85,22 @@ export default {
     const store = useStore();
     const settingsObject = ref(null);
     const previewType = ref('draft')
+
     store.dispatch('getInvoicingSettings').then(() => {
       settingsObject.value = store.state.Settings.invoicing.object;
     })
-    return {store, settingsObject, previewType}
+    const currencyPreview = () =>{
+      if(settingsObject.value.currency_locale && settingsObject.value.currency_locale.length === 5 && settingsObject.value.currency && settingsObject.value.currency.length ===3){
+        return new Intl.NumberFormat(settingsObject.value.currency_locale,{style: 'currency', currency: settingsObject.value.currency}).format(123.45)
+      }
+      return '..waiting for input..';
+    }
+    function save(){
+      const payload = {...store.state.Settings.invoicing, object: {...settingsObject.value}}
+      store.dispatch('storeInvoicingSettings', payload)
+    }
+
+    return {store, settingsObject, previewType, currencyPreview, save}
   }
 }
 </script>

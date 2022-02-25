@@ -9,8 +9,9 @@
 
     </div>
   </div>
-  <div class="grid-3-3-3-3 p-2 b-1 b-rounded m-y-1 b-gray-light-25" v-for="product in $store.state.Product.products">
+  <div class="grid-1-2-3-3-3 p-2 b-1 b-rounded m-y-1 b-gray-light-25" v-for="product in $store.state.Product.products">
     <div class="b-r-1 b-gray-light-25 place-y-center">{{product.product_number || '-'}}</div>
+    <div class="b-r-1 b-gray-light-25 place-y-center p-l-3">{{$store.getters.formatCurrency(product.price)}} / {{product.item_type}}</div>
     <div class="b-r-1 b-gray-light-25 place-y-center p-l-3">{{product.name}}</div>
     <div class="b-r-1 b-gray-light-25 place-y-center p-l-3">{{product.category || '-'}}</div>
     <div class="p-l-3">
@@ -49,6 +50,7 @@ export default {
       showModal.value = false;
     }
     fetch();
+    $store.dispatch('getInvoicingSettings');
 
     function navigate(ev){
       router.push('/product/'+ev)

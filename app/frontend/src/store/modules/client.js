@@ -1,5 +1,13 @@
 import clientService from "@/services/clientService";
 
+const reuse = {
+    prepareContacts(client){
+        client.client_contact.forEach((contact, i) => {
+            client.client_contact[i].fullName = contact.first_name + ' ' + contact.last_name;
+        })
+        return client;
+    }
+}
 
 export default {
     mutations: {
@@ -23,6 +31,16 @@ export default {
         currentClient: null
     },
     actions: {
+        async ensureClientAvailability({commit, state}, clientId){
+            const client = state.clients.find(x => x.id = clientId);
+            if(!client){
+                const newClient = await clientService.get(clientId);
+                newClient.client_contact = reuse.prepareContacts(newClient);
+                commit('addClient', newClient)
+                return true;
+            }
+            return true;
+        },
         async storeClient({commit}, client) {
             const method = client.id ? 'update' : 'create';
             try {
@@ -63,9 +81,8 @@ export default {
         async setCurrentClientById({commit}, clientId) {
             try {
                 const client = await clientService.get(clientId)
-                client.client_contact.forEach((contact, i) => {
-                    client.client_contact[i].fullName = contact.first_name + ' ' + contact.last_name;
-                })
+
+                client.client_contact = reuse.prepareContacts(client);
                 commit('setCurrentClient', client)
                 commit('addClient', client)
                 return true;
@@ -88,8 +105,8 @@ export default {
         }
     },
     getters: {
-        getClientContactsByClientId(state, client_id) {
-            return state.clients?.find(x => x.id === client_id)?.client_contact;
+        getClientContactsByClientId: state => clientId => {
+            return state.clients?.find(x => x.id === clientId)?.client_contact;
         },
         getCurrentClientContacts(state) {
             return state.currentClient?.client_contact || [];

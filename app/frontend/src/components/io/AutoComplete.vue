@@ -61,7 +61,7 @@ export default {
     const delayedUnfocus = () => setTimeout(() => {
           isFocused.value = false;
           if(allowNewEntry){
-            emit('update:givenId', filter.value.id)
+            emit('update:givenId', filter.value)
           }
         }, 100)
 
@@ -80,13 +80,18 @@ export default {
 
     function setFilter() {
       if (givenId !== null && filteredOptions) {
-        filter.value = filteredOptions.value.find(x => x.id === givenId)[resultTitle]
+        const preExisting = filteredOptions.value.find(x => x.id === givenId);
+        if(preExisting){
+          filter.value = preExisting[resultTitle]
+        }
         filteredOptions.value = [];
       }
     }
 
     setFilter();
-    watch(()=>givenId, () => setFilter())
+    watch(()=>givenId, () => {
+      setFilter()
+    },{immediate:true})
     const select = () => {
       lockedIn.value = filteredOptions.value[selected.value];
       filter.value = filteredOptions.value[selected.value][resultTitle]

@@ -48,6 +48,7 @@ class Smabi extends Serve
         $this->assignProvider('db', $db, function() use ($credentials){
 
             $this->provider['db'] = new DatabaseWrapper($credentials[$this->dbCredentials]);
+//            $this->provider['db']->setEnvironment(['']);
         });
         $this->assignProvider('auth', $auth, function () use ($credentials){
             $this->provider['auth'] = new JwtWrapper();

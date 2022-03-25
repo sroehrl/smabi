@@ -36,7 +36,7 @@ class ProductController extends Smabi{
             return ProductModel::search($params['search']);
         }
         if (isset($params['offset']) && isset($params['limit'])) {
-            return ProductModel::find(['^delete_date'], ['orderBy' => ['insert_date', 'desc'], 'limit' => [$params['offset'], $params['limit'] + $params['offset']]]);
+            return ProductModel::find(['^delete_date'], ['orderBy' => ['product_number', 'asc'], 'limit' => [$params['offset'], $params['limit'] + $params['offset']]]);
         }
         return [];
     }

@@ -1,6 +1,6 @@
 <template>
 <div class="p-5">
-  <h3 class="font-center">Product: {{currentProduct ? currentProduct.name : 'New Product'}}</h3>
+  <h3 class="font-center">Product: {{currentProduct && currentProduct.name.length>0 ? currentProduct.name : 'New Product'}}</h3>
   <form @submit.prevent="save" class="container" v-if="currentProduct">
     <div class="grid-8-4">
       <div class="p-r-2">
@@ -26,10 +26,10 @@
     </div>
     <div class="grid-6-6 md:grid-3-3-3-3">
       <div class="p-r-2">
-        <auto-complete v-if="categoryOptions.length>0" result-title="category" :required="true" label="Product Category" v-model:given-id="currentProduct.category" :options="categoryOptions"/>
+        <auto-complete v-if="loaded === 2" :allow-new-entry="true" result-title="category" :required="true" label="Product Category" v-model:given-id="currentProduct.category" :options="categoryOptions"/>
       </div>
       <div class="p-r-2 md:p-l-2">
-        <auto-complete v-if="itemTypes" :required="true" label="Charge Type" v-model:given-id="currentProduct.item_type" :options="itemTypes"/>
+        <auto-complete v-if="loaded === 2" :required="true" label="Charge Type" v-model:given-id="currentProduct.item_type" :options="itemTypes"/>
       </div>
       <div class="p-r-2 md:p-l-2">
         <div class="input">
@@ -64,6 +64,7 @@ import {useStore} from "vuex";
 import {ref, inject} from "vue";
 import AutoComplete from "@/components/io/AutoComplete";
 import Api from "@/services/api";
+import {productStructure} from "@/store/modules/product";
 
 export default {
   name: "Product",
@@ -73,7 +74,8 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const $store = useStore();
-    const currentProduct = ref(null)
+    const currentProduct = ref({...productStructure})
+    const loaded = ref(0);
     const itemTypes = ref([
       {id:'hour',name:'Per hour'},
       {id:'fixed',name:'Fixed price'},
@@ -82,12 +84,16 @@ export default {
     if(route.params.id){
       $store.dispatch('setCurrentProductById', route.params.id).then(()=>{
         currentProduct.value = {...$store.state.Product.currentProduct};
+        loaded.value++;
       })
+    } else {
+      loaded.value++;
     }
 
     const categoryOptions = ref([]);
     Api.get('/category').then(res => {
       categoryOptions.value = res.data;
+      loaded.value++;
     })
     async function save(){
       await $store.dispatch('storeProduct', currentProduct.value)
@@ -101,7 +107,7 @@ export default {
       })
     }
 
-    return {currentProduct, categoryOptions, itemTypes, save, remove}
+    return {currentProduct, categoryOptions, itemTypes, loaded, save, remove}
   }
 }
 </script>

@@ -26,7 +26,7 @@ export default {
             try {
                 const newOrUpdated = await invoiceService[method](invoice);
                 commit('addInvoice', newOrUpdated)
-                return true;
+                return newOrUpdated.id;
             } catch (e) {
                 return false;
             }
@@ -60,4 +60,13 @@ export default {
             }
         }
     }
+}
+export const invoiceStructure = {
+    client_id:null,
+    invoice_number:'',
+    notes:'',
+    status:'draft',
+    contact_id:null,
+    invoice_date: null,
+    due_date: null
 }

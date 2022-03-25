@@ -42,9 +42,15 @@ const routes = [
 
   },
   {
-    path: '/invoices/:tab*',
+    path: '/invoices',
     name: 'Invoicing',
     component: () => import(/* webpackChunkName: "Invoicing" */ '../views/Invoices.vue')
+
+  },
+  {
+    path: '/invoice/:id',
+    name: 'Invoice',
+    component: () => import(/* webpackChunkName: "Invoicing" */ '../views/Invoice.vue')
 
   }
 ]
